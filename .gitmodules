@@ -1,3 +1,3 @@
 [submodule "refer_context"]
 	path = refer_context
-	url = git@github.com:volkancirik/referring-expressions.git
+	url = https://github.com/volkancirik/referring-expressions
