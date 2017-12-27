@@ -16,7 +16,7 @@ def get_main_args():
   parser.add_argument('--timeout',dest='timeout',type=int, help='timeout in seconds, default = 300000', default = 300000)
   parser.add_argument('--seed',dest='seed',type=int, help='seed, default = 0',default=0)
 
-  parser.add_argument('--epochs', type=int, default=10,help='# of epochs, default = 10')
+  parser.add_argument('--epochs', type=int, default=6,help='# of epochs, default = 6')
   parser.add_argument('--val-freq', dest='val_freq', type=int, default=0,help='validate every n instances, 0 is for full pass over trn data, default = 0')
   parser.add_argument('--save-path', dest='save_path', type=str, default='exp',help='folder to save experiment')
   parser.add_argument('--resume', dest='resume', type=str, default='',help='resume from this model snapshot')
@@ -86,7 +86,7 @@ def get_baseline_args():
   parser.add_argument('--timeout',dest='timeout',type=int, help='timeout in seconds, default = 300000', default = 300000)
   parser.add_argument('--seed',dest='seed',type=int, help='seed, default = 0',default=0)
 
-  parser.add_argument('--epochs', type=int, default=10,help='# of epochs, default = 10')
+  parser.add_argument('--epochs', type=int, default=6,help='# of epochs, default = 6')
   parser.add_argument('--val-freq', dest='val_freq', type=int, default=0,help='validate every n instances, 0 is for full pass over trn data, default = 0')
   parser.add_argument('--save-path', dest='save_path', type=str, default='exp',help='folder to save experiment')
   parser.add_argument('--resume', dest='resume', type=str, default='',help='resume from this model snapshot')
