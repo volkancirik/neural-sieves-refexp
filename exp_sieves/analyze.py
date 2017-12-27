@@ -27,7 +27,7 @@ parser.add_argument('--coco-instances', dest='coco_inst', help='coco instances f
 parser.add_argument('--prediction', dest='prediction', help='prediction file of format: json')
 parser.add_argument('--parse', dest='parse', help='root path to parsing folder')
 parser.add_argument('--latex', dest='latex', help='print to latex file if present, default=""', default = '')
-parser.add_argument('--category', dest='category', help='category for analysis loc|boxes|words|depth|obj_cat|obj_box_count|oov|box_size|box_order|obj_box_order|box_distance|box2d, default = obj_box_order',default = 'obj_box_order')
+parser.add_argument('--category', dest='category', help='category for analysis loc|boxes|words|depth|obj_cat|obj_box_count|oov|box_size|box_order|obj_box_order|box_distance|box2d|none, default = none',default = 'none')
 
 parser.add_argument('--n-supporting', dest='n_supporting', help='number of supporting annotations, default = 2408',default = 2407)
 parser.add_argument('--precision-k', dest='precision_k', help='precision@k, default = 1',default = 1, type=int)
@@ -294,6 +294,10 @@ def getCategories(category, trees, boxes, gold_labels, CNN, prediction, cut_off 
 
 evaluator = RefexpEvalComprehension(args.refexp, args.coco_inst)
 (prec_all, eval_results) = evaluator.evaluate(args.prediction, flag_ignore_non_existed_object=True,flag_ignore_non_existed_gt_refexp=True, thresh_k = args.precision_k)
+
+if args.category == "none":
+  quit(1)
+
 print "refcocog dataset is loading"
 data = pickle.load(open(args.refcocog))
 print "LOADED!"
@@ -332,9 +336,9 @@ for c in filtered:
   res = {'prec' : round(prec,3), 'frac' : round(len(filtered[c])*1.0/len(pred),3)}
   results[c] = res
 
-print "Category: All Percentage:1.0 Precision@{}: {}".format(args.precision_k,round(prec_all,3))
+print "Category: All Precision@{} Percentage:1.0: {}".format(args.precision_k,round(prec_all,3))
 for c in results:
-  print "Category: {} Percentage:{} Precision@{}: {}".format(args.precision_k,c,results[c]['frac'],results[c]['prec'])
+  print "Category: {} Precision@{} Percentage:{}: {}".format(c,args.precision_k,results[c]['frac'],results[c]['prec'])
 
 if args.latex != '':
   f = open(args.latex,'w')
