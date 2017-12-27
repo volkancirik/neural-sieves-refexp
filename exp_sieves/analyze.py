@@ -336,9 +336,9 @@ for c in filtered:
   res = {'prec' : round(prec,3), 'frac' : round(len(filtered[c])*1.0/len(pred),3)}
   results[c] = res
 
-print "Category: All Precision@{} Percentage:1.0: {}".format(args.precision_k,round(prec_all,3))
+print "Category: All Precision@{} Percentage:{5.3f}: {:5.3f}".format(args.precision_k,1.0,round(prec_all,3))
 for c in results:
-  print "Category: {} Precision@{} Percentage:{}: {}".format(c,args.precision_k,results[c]['frac'],results[c]['prec'])
+  print "Category: {} Precision@{} Percentage:{:5.3f}: {:5.3f}".format(c,args.precision_k,results[c]['frac'],results[c]['prec'])
 
 if args.latex != '':
   f = open(args.latex,'w')
