@@ -1,7 +1,7 @@
 #from __future__ import absolute_import
 import torch
 
-from models import cmn, cmn_loc, box_filter, box_mlp
+from models import cmn, cmn_loc, box_filter
 from util.model_util import *
 
 def get_model(vocabs, config):
@@ -13,8 +13,6 @@ def get_model(vocabs, config):
     net = cmn_loc.CMN_LOC(w2i, p2i, n2i, config)
   elif config['model'] == 'box_filter':
     net = box_filter.BOX_FILTER(w2i, p2i, n2i, config)
-  elif config['model'] == 'box_mlp':
-    net = box_mlp.BOX_MLP(w2i, p2i, n2i, config)
   else:
     raise NotImplementedError()
 
