@@ -7,8 +7,8 @@ def get_main_args():
   parser.add_argument('--load',dest='dump', help='load a dataset dump',default='../data/stanford_cmn_refcocog_iou05_umd.NOtriplets.pkl')
   parser.add_argument('--cnn',dest='cnn',default='../data/stanford_cmn_refcocog_iou05.box+meta+smax.h5',help='cnn features filetype : h5')
 
-  parser.add_argument('--n-hidden',dest='n_hidden', type=int, help='# of hidden units, default = 1000', default = 1000)
-  parser.add_argument('--n-layers',dest='n_layer', type=int, help='# of layers for REL and LOC projections 1|2, default = 1', default = 1)
+  parser.add_argument('--hidden',dest='n_hidden', type=int, help='# of hidden units, default = 1000', default = 1000)
+  parser.add_argument('--layers',dest='n_layer', type=int, help='# of layers for REL and LOC projections 1|2, default = 1', default = 1)
   parser.add_argument('--model',dest='model', help='model type cmn|cmn_loc, default:cmn_loc', default = 'cmn_loc')
   parser.add_argument('--dropout',dest='dropout', help='dropout rate, default=0', type=float, default = 0.)
   parser.add_argument('--clip',dest='clip', help='gradient clipping, default=10.0',type=float, default = 10.0)
@@ -77,8 +77,8 @@ def get_baseline_args():
 
   parser.add_argument('--load',dest='dump', help='load a dataset dump',default='../data/stanford_cmn_refcocog_iou05_umd.NOtriplets.pkl')
   parser.add_argument('--cnn',dest='cnn',default='../data/stanford_cmn_refcocog_iou05.box+meta+smax.h5',help='cnn features filetype : h5')
-  parser.add_argument('--n-hidden',dest='n_hidden', type=int, help='# of hidden units, default = 1000', default = 1000)
-  parser.add_argument('--n-layers',dest='n_layer', type=int, help='# of layers for REL and LOC projections 1|2, default = 1', default = 1)
+  parser.add_argument('--hidden',dest='n_hidden', type=int, help='# of hidden units, default = 1000', default = 1000)
+  parser.add_argument('--layers',dest='n_layer', type=int, help='# of layers for REL and LOC projections 1|2, default = 1', default = 1)
   parser.add_argument('--model',dest='model', help='model type cmn|cmn_loc, default:cmn_loc', default = 'cmn_loc')
   parser.add_argument('--dropout',dest='dropout', help='dropout rate, default=0', type=float, default = 0.)
   parser.add_argument('--clip',dest='clip', help='gradient clipping, default=10.0',type=float, default = 10.0)
