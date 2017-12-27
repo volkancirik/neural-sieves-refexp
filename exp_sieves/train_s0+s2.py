@@ -160,8 +160,6 @@ config = OrderedDict([('model', args.model),
                       ('lr_min' , args.lr_min),
                       ('lr_decay' , args.lr_decay),
                       ('weight_decay' , args.weight_decay),
-                      ('clip' , args.clip),
-                      ('only_spatial' , args.only_spatial),
                       ('debug'  , args.debug_mode)])
 net = get_model(vocabs, config)
 
