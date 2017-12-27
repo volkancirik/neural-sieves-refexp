@@ -1,6 +1,6 @@
 from __future__ import absolute_import
 """
-train sieve 0
+train sieve 0: filter boxes based on only spatial and visual features
 """
 __author__ = "volkan cirik"
 
