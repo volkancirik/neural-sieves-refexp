@@ -59,7 +59,7 @@ def evaluate(filter_net,net, split, CNN, config, experiment_log,
     pbar = indexes
 
   precision_count = [0]*precision_f1
-  precision_hit = [0]*precision_f1
+  precision_hit   = [0]*precision_f1
 
   preds = []
   net.eval()
@@ -270,14 +270,14 @@ for ITER in range(args.epochs):
     if args.val_freq != 0 and done % args.val_freq == 0:
       print("")
       val_score, val_rate = evaluate(filter_net, net, dev, CNN, config, experiment_log, verbose = False)
-      print("epoch {:3d}/{:3d} inst#{:3d} val_acc: {:5.3f}".format(ITER+1,args.epochs,ii,val_score))
+      print("\nepoch {:3d}/{:3d} inst#{:3d} val_acc: {:5.3f}".format(ITER+1,args.epochs,ii,val_score))
     done += 1
   trn_loss = closs / cinst
   trn_acc  = correct/cinst
   trn_rate = len(indexes)/(time.time() - trn_start)
   val_score, val_rate = evaluate(filter_net, net, dev, CNN, config, experiment_log, verbose = args.verbose)
 
-  log = "epoch {:3d}/{:3d} trn_loss: {:5.3f} trn_acc: {:5.3f} trn speed {:5.1f} inst/sec \n\t\tbest_val: {:5.3f} val_acc: {:5.3f} val speed {:5.1f} inst/sec\n".format(ITER+1,args.epochs,trn_loss,trn_acc,trn_rate,best_val,val_score,val_rate)
+  log = "\nepoch {:3d}/{:3d} trn_loss: {:5.3f} trn_acc: {:5.3f} trn speed {:5.1f} inst/sec \n\t\tbest_val: {:5.3f} val_acc: {:5.3f} val speed {:5.1f} inst/sec\n".format(ITER+1,args.epochs,trn_loss,trn_acc,trn_rate,best_val,val_score,val_rate)
   config['lr'] = max(config['lr']*config['lr_decay'],config['lr_min'])
 
   if config['optim'] == 'sgd':
@@ -302,7 +302,7 @@ best_net = torch.load(snapshot_model + '.best', map_location=lambda storage, loc
 tst_score, tst_rate = evaluate(filter_net, best_net, tst, CNN, config, experiment_log,
                                verbose = args.verbose, tst_json = tst_json,
                                out_file = out_file)
-log = "model scores based on best validation accuracy\nval_acc:{:5.3f} test_acc: {:5.3f} test speed {:5.1f} inst/sec\n".format(best_val,tst_score,tst_rate)
+log = "\nmodel scores based on best validation accuracy\nval_acc:{:5.3f} test_acc: {:5.3f} test speed {:5.1f} inst/sec\n".format(best_val,tst_score,tst_rate)
 if args.verbose:
   print(log)
 experiment_log.write(log)
