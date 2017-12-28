@@ -112,9 +112,8 @@ def get_baseline_args():
   parser.add_argument('--top-n', dest='top_n',type=int, default=20,help='top-k of rpn proposals, default = 20')
   parser.add_argument('--out-file', dest='out_file', default='',help='output path for json file')
   parser.add_argument('--no-lang', dest='no_lang', action = 'store_true', help='do not use referring expression')
-  parser.add_argument('--precision-k', dest='precision_k', type = float, default=3.0,help='precision @k, default = 3')
-  parser.add_argument('--precision-f1', dest='precision_f1', type = float, default=3.0,help='precision for filter 1, default = 3')
-  parser.add_argument('--precision-f2', dest='precision_f2', type = float, default=3.0,help='precision for filter 2, default = 3')
+  parser.add_argument('--precision_f1', dest='precision_f1', type = float, default=3.0,help='precision for filter 1, default = 3')
+  parser.add_argument('--precision_f2', dest='precision_f2', type = float, default=3.0,help='precision for filter 2, default = 3')
 
   parser.add_argument('--refexp-root', dest='refexp_root', default='../data',help='root for google_refexp_{train|val}_201511_coco_aligned_mcg_umd.json, default = ../data')
 
