@@ -83,6 +83,7 @@ def evaluate(filter_net,net, split, CNN, config, experiment_log,
              out_file = '', precision_f1 = 10, no_lang = False,
              annid2catid = {}):
 
+
   box_usage = config['box_usage']
   model     = config['model']
 
@@ -96,14 +97,11 @@ def evaluate(filter_net,net, split, CNN, config, experiment_log,
   else:
     pbar = indexes
 
-  precision_count = [0]*precision_f1
-  precision_hit = [0]*precision_f1
-
   preds = []
   net.eval()
 
-  stats = { 'hit' : defaultdict(int), 'cnt' : defaultdict(int) }
   all_supporting = []
+
   for j in pbar:
     tree = trees[j]
     filter_pred, gold_predicted = run_filter(filter_net, tree, boxes, CNN, gold, j, precision_f1, annid2catid)
@@ -206,6 +204,7 @@ if not os.path.exists(args.save_path):
 snapshot_pfx   = 'snapshot.' + ".".join([key.upper()+str(config[key]) for key in config.keys() if key[0] != 'f'])
 snapshot_model = os.path.join(args.save_path, snapshot_pfx + '.model')
 experiment_log = open(os.path.join(args.save_path, snapshot_pfx + '.log'),'w')
+
 out_file = os.path.join(args.save_path, snapshot_pfx + '.tst-eval.json')
 print("="*20)
 print("Starting training {} model".format(config['model']))
