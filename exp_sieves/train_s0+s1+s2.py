@@ -138,7 +138,8 @@ tst_json= data['tst_json']
 vectors, w2i, p2i, n2i, i2w, i2p, i2n = vocabs
 Xtrn_tree, Xtrn_box, Xtrn_iou, Ytrn   = trn
 
-indexes = range(len(Xtrn_tree))
+#indexes = range(len(Xtrn_tree))
+indexes = range(100)
 
 if args.box_usage == 0:
   feat_box = 4096 + 5
@@ -318,11 +319,6 @@ for ITER in range(args.epochs):
     torch.save(net, snapshot_model + '.best')
     best_val = val_score
   experiment_log.flush()
-  if args.yo:
-    stats = "epoch {:3d}/{:3d}-trn_loss: {:5.3f}-trn_acc: {:5.3f}-trn speed {:5.1f} inst/sec-best_val: {:5.3f}-val_acc: {:5.3f}-val speed {:5.1f} inst/sec".format(ITER+1,args.epochs,trn_loss,trn_acc,trn_rate,best_val,val_score,val_rate).split('-')
-    text  = "\n".join(["{} : {}".format(arg,getattr(args,arg)) for arg in vars(args)] + stats)
-    response = requests.post('http://api.justyo.co/yo/', data={'api_token': YO_API_TOKEN,'text' : text, 'username' : YO_USERNAME})
-    print "YO! RESPONSE:",response
 
 best_net = torch.load(snapshot_model + '.best', map_location=lambda storage, location: storage.cuda(0))
 tst_score, tst_rate = evaluate(filter_net, box_filter_net, best_net, tst, CNN, config, experiment_log,
