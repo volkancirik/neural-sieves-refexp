@@ -98,7 +98,7 @@ def get_baseline_args():
   parser.add_argument('--debug',dest='debug_mode', action = 'store_true', help='debug mode')
   parser.add_argument('--no-finetune',dest='finetune', action = 'store_false', help='do not finetune word embeddings')
   parser.add_argument('--optim',dest='optim',help='optimization method adam|sgd, default:sgd',default = 'sgd')
-  parser.add_argument('--loss',dest='loss',help='loss for training nll|smargin|lamm|mbr, default:nll',default = 'nll')
+  parser.add_argument('--loss',dest='loss',help='loss for training nll|smargin|lamm|mbr, default:smargin',default = 'smargin')
   parser.add_argument('--lr',dest='lr',help='initial learning rate, default = 0.01',default = 0.01, type = float)
   parser.add_argument('--lr-min',dest='lr_min',help='minimum lr, default = 0.00001',default = 0.00001, type = float)
   parser.add_argument('--lr-decay',dest='lr_decay',help='learning rate decay, default = 0.4',default = 0.4, type = float)
