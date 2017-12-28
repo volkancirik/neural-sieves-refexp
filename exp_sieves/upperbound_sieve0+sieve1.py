@@ -53,7 +53,7 @@ def evaluate(filter_net, box_filter_net, split, CNN, verbose = False, precision_
   else:
     pbar = indexes
 
-  THRESHOLD = [0.01,0.05,0.1,0.2]
+  THRESHOLD = [0.01,0.1]
   RANKS     = range(2,6)
 
   th_count  = { th:defaultdict(int) for th in THRESHOLD}
@@ -82,7 +82,7 @@ def evaluate(filter_net, box_filter_net, split, CNN, verbose = False, precision_
         hit_rd[ii] += 1.0
     total += 1.0
 
-  out = open(out_file, 'a+')
+  out = open(out_file, 'w')
   f1_config = "p@{}".format(int(precision_f1)) if precision_f1 >= 1 else "th>={}".format(precision_f1)
   print "_"*20
   print "split: {} filter1 {}".format(split_name, f1_config)
@@ -125,5 +125,5 @@ if args.box_filter_model != '':
 else:
   raise NotImplementedError()
 
-for precision_f1 in [0.01,0.05,0.1,0.2] + range(2,6):
+for precision_f1 in [0.01,0.1] + range(2,6):
   evaluate(filter_net, box_filter_net, dev, CNN, precision_f1 = precision_f1, verbose = True, split_name = 'dev', out_file = args.out_file)
