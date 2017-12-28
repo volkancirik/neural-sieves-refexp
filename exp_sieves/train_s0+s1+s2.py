@@ -138,8 +138,7 @@ tst_json= data['tst_json']
 vectors, w2i, p2i, n2i, i2w, i2p, i2n = vocabs
 Xtrn_tree, Xtrn_box, Xtrn_iou, Ytrn   = trn
 
-#indexes = range(len(Xtrn_tree))
-indexes = range(100)
+indexes = range(len(Xtrn_tree))
 
 if args.box_usage == 0:
   feat_box = 4096 + 5
