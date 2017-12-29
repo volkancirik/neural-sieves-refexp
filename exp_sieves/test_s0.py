@@ -43,7 +43,7 @@ def evaluate(net, split, CNN, config, experiment_log, box_usage = 0, verbose = F
 
   preds = []
   net.eval()
-  net.evaluate = False
+
   stats = { 'hit' : defaultdict(int), 'cnt' : defaultdict(int) }
   all_supporting = []
   for j in pbar:
@@ -58,24 +58,9 @@ def evaluate(net, split, CNN, config, experiment_log, box_usage = 0, verbose = F
       box_rep = spat_feats
     else:
       raise NotImplementedError()
-    if "ground" in config['model'].lower():
-      prediction = net(tree, box_rep, tree, decorate = True)
-      supporting = []
-      loc_count = 0
-      for ii,node in enumerate(tree.nonterms()):
-        _,phrase_pred = torch.max(node._expr.data,1)
-        del node._expr, node._attn
-        if node.label == "loc":
-          loc_count += 1
-        if node.label == "loc" and loc_count>=2:
-          supporting += [phrase_pred[0][0]]
-    else:
-      if no_lang:
-        prediction = net([0]*5, box_rep, tree)
-      else:
-        prediction = net([w2i.get(node.label,0) for node in tree.leaves()], box_rep, tree)
-      supporting = []
 
+    prediction = net([0]*5, box_rep, tree)
+    supporting = []
     _,pred = torch.max(prediction.data,1)
 
     pred_np  = prediction.cpu().data.numpy()
