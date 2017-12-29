@@ -41,9 +41,8 @@ def run_filter(filter_net, tree, boxes, CNN, gold, instance_idx, precision_f1):
 
   return f1_pred, len(set(f1_pred).intersection(set(gold[instance_idx])))
 
-def evaluate(filter_net,net, split, CNN, config, experiment_log,
-             box_usage = 0, verbose = False, tst_json = [],
-             out_file = '', precision_f1 = 10, no_lang = False):
+def evaluate(filter_net,net, split, CNN, config, precision_f1,
+             verbose = False, tst_json = [], out_file = ''):
 
   box_usage = config['box_usage']
   model     = config['model']
@@ -58,12 +57,9 @@ def evaluate(filter_net,net, split, CNN, config, experiment_log,
   else:
     pbar = indexes
 
-  precision_count = [0]*precision_f1
-  precision_hit   = [0]*precision_f1
-
   preds = []
   net.eval()
-  net.evaluate = True
+
   stats = { 'hit' : defaultdict(int), 'cnt' : defaultdict(int) }
   all_supporting = []
   for j in pbar:
@@ -72,8 +68,8 @@ def evaluate(filter_net,net, split, CNN, config, experiment_log,
 
     if gold_predicted == 0:
       n += 1
-      preds.append(None)
-      all_supporting.append(None)
+      preds.append([[-1,-1,-1,-1]])
+      all_supporting.append([])
       continue
 
     gold_instance = []
@@ -97,17 +93,15 @@ def evaluate(filter_net,net, split, CNN, config, experiment_log,
     hit        = (1.0 if pred[0][0] in set(gold_instance) else 0.0)
     correct   += hit
     n += 1
-    preds.append(filter_pred[int(pred[0][0])])
+    if len(tst_json) > 0:
+      pred_np  = prediction.cpu().data.numpy()
+      preds.append(np.array(tst_json[j]['box_names'])[np.argsort(-pred_np)[0]])
     all_supporting.append(supporting)
   eval_time = time.time() - eval_start
 
   if tst_json != []:
     for ii,inst in enumerate(tst_json):
-      if preds[ii] == None:
-        tst_json[ii]['predicted_bounding_boxes'] = [[-1,-1,-1,-1]]
-        tst_json[ii]['context_box'] = [-1]
-        continue
-      tst_json[ii]['predicted_bounding_boxes'] = [tst_json[ii]['box_names'][preds[ii]]]
+      tst_json[ii]['predicted_bounding_boxes'] = [list(p) for p in preds[ii]]
       tst_json[ii]['context_box'] = all_supporting[ii]
     json.dump(tst_json,open(out_file,'w'))
 
@@ -269,13 +263,13 @@ for ITER in range(args.epochs):
       break
     if args.val_freq != 0 and done % args.val_freq == 0:
       print("")
-      val_score, val_rate = evaluate(filter_net, net, dev, CNN, config, experiment_log, verbose = False)
+      val_score, val_rate = evaluate(filter_net, net, dev, CNN, config, args.precision_f1, verbose = False)
       print("\nepoch {:3d}/{:3d} inst#{:3d} val_acc: {:5.3f}".format(ITER+1,args.epochs,ii,val_score))
     done += 1
   trn_loss = closs / cinst
   trn_acc  = correct/cinst
   trn_rate = len(indexes)/(time.time() - trn_start)
-  val_score, val_rate = evaluate(filter_net, net, dev, CNN, config, experiment_log, verbose = args.verbose)
+  val_score, val_rate = evaluate(filter_net, net, dev, CNN, config, args.precision_f1, verbose = args.verbose)
 
   log = "\nepoch {:3d}/{:3d} trn_loss: {:5.3f} trn_acc: {:5.3f} trn speed {:5.1f} inst/sec \n\t\tbest_val: {:5.3f} val_acc: {:5.3f} val speed {:5.1f} inst/sec\n".format(ITER+1,args.epochs,trn_loss,trn_acc,trn_rate,best_val,val_score,val_rate)
   config['lr'] = max(config['lr']*config['lr_decay'],config['lr_min'])
@@ -299,7 +293,7 @@ for ITER in range(args.epochs):
   experiment_log.flush()
 
 best_net = torch.load(snapshot_model + '.best', map_location=lambda storage, location: storage.cuda(0))
-tst_score, tst_rate = evaluate(filter_net, best_net, tst, CNN, config, experiment_log,
+tst_score, tst_rate = evaluate(filter_net, best_net, tst, CNN, config, args.precision_f1,
                                verbose = args.verbose, tst_json = tst_json,
                                out_file = out_file)
 log = "\nmodel scores based on best validation accuracy\nval_acc:{:5.3f} test_acc: {:5.3f} test speed {:5.1f} inst/sec\n".format(best_val,tst_score,tst_rate)
