@@ -72,9 +72,13 @@ def run_filter(filter_net, tree, boxes, CNN, gold, instance_idx, precision_f1, a
     ann_id = str(CNN['meta'][boxes[instance_idx][gold_box]])
     gold_cats.add(annid2catid[ann_id])
 
-  cat_ids = [annid2catid[str(ann_id)] for ann_id in CNN['meta'][boxes[instance_idx]][f1_pred]]
-  filtered_cat_ids = [idx for idx,cat_id in enumerate(cat_ids) if cat_id in gold_cats]
-  final_pred = f1_pred[filtered_cat_ids] ### filter by obj category
+  try:
+    cat_ids = [annid2catid[str(ann_id)] for ann_id in CNN['meta'][boxes[instance_idx]][f1_pred]]
+    filtered_cat_ids = [idx for idx,cat_id in enumerate(cat_ids) if cat_id in gold_cats]
+    final_pred = f1_pred[filtered_cat_ids] ### filter by obj category
+  except:
+    final_pred = f1_pred
+    pass
 
   return final_pred, len(set(final_pred).intersection(set(gold[instance_idx])))
 
