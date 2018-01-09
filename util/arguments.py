@@ -111,6 +111,6 @@ def get_baseline_args():
   parser.add_argument('--box-filter-model',dest = 'box_filter_model', help="box type filtering model", default = 'best-models/sieve1.model.best')
 
   parser.add_argument('--order-feats',dest='order_feats', action = 'store_true', help='use order features for boxes')
-
+  parser.add_argument('--perturbation',dest='perturbation',help="perturbation function shuffle|shuffle_pos|noun|adj|noun+adj|adj+noun|headp default='adj'",default='adj')
   args = parser.parse_args()
   return args
